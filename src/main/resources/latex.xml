@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<latexs>
+   <pattern tag="Array">\\\{\{\\begin\{array\}\{\*\{20\}\{c\}\}.*?\\end\{array\}\}</pattern>
+   <pattern tag="Array_2">\\\{\\begin\{matrix\}.*\\end\{matrix\}</pattern>
+   <pattern tag="Array_3">(\$|)\\\{ \\begin\{gathered\}.+?\\\\.*? \\\\ \\end\{gathered\}(\$|)</pattern>
+   <pattern tag="Array_4">(\$|)\\opencurlybrace \\begin\{matrix\}.+?\\\\.+? \\end\{matrix\}(\$|)</pattern>
+   <pattern tag="Array_5">(\$|)\\\{\{\\begin\{array\}\{\*\{20\}\{c\}\} (\{.+?\}\\\\)+? \{.*?\} \\end\{array\}\}(\$|)</pattern>
+   <pattern tag="Array_6">(\$|)\\\{\\begin\{array\}\{\*\{20\}\{c\}\} (\{.+?\}\\\\)+? \{.*?\} \\end\{array\}(\$|)</pattern>
+   <pattern tag="Array_7">\$\\\{\\begin\{array\}\{l\}.+?\\\\\\.+?\\end\{array\}\$</pattern>
+   <pattern tag="Array_8">\$\\\{\\begin\{array\}\{l\}.+?\\\\.+?\\end\{array\}\$</pattern>
+   <pattern tag="bar">\\bar</pattern>
+   <pattern tag="分式">\\frac\{</pattern>
+   <pattern tag="根式">\\sqrt</pattern>
+   <pattern tag="幂">\^\{</pattern>
+   <pattern tag="下标">_\{</pattern>
+   <pattern tag="Trigonometric">(sin|cos|tan|cot|sec|csc)</pattern>
+   <pattern tag="Adjoin" describe="4ab或者xy这种连写表达式在÷之后语义有问题">/[a-z0-9]</pattern>
+   <pattern tag="Subscript" describe="把x1这种转换成x_1">[a-z][0-9]+</pattern>
+   <pattern tag="more">\{\{[.[^\{\}]]*\}\}</pattern>
+   <pattern tag="none">\{[.[^\{\}]]*\}</pattern>
+</latexs>
