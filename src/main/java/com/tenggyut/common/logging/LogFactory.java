@@ -1,4 +1,4 @@
-package com.tengyt.common.logging;
+package com.tenggyut.common.logging;
 
 
 import org.apache.logging.log4j.LogManager;

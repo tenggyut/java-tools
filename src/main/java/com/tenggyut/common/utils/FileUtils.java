@@ -1,9 +1,9 @@
-package com.tengyt.common.utils;
+package com.tenggyut.common.utils;
 
 
 import com.google.common.base.Preconditions;
 import com.google.common.io.Files;
-import com.tengyt.common.logging.LogFactory;
+import com.tenggyut.common.logging.LogFactory;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;

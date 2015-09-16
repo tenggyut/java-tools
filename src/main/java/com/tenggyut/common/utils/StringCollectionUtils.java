@@ -1,4 +1,4 @@
-package com.tengyt.common.utils;
+package com.tenggyut.common.utils;
 
 import com.google.common.base.*;
 import com.google.common.collect.Collections2;

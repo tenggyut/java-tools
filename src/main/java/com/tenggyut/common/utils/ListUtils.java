@@ -1,7 +1,7 @@
-package com.tengyt.common.utils;
+package com.tenggyut.common.utils;
 
 import com.google.common.collect.Sets;
-import com.tengyt.common.logging.LogFactory;
+import com.tenggyut.common.logging.LogFactory;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;

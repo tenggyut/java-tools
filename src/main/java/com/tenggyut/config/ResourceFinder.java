@@ -1,8 +1,8 @@
-package com.tengyt.config;
+package com.tenggyut.config;
 
 import com.google.common.base.StandardSystemProperty;
 import com.google.common.io.Resources;
-import com.tengyt.common.logging.LogFactory;
+import com.tenggyut.common.logging.LogFactory;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
