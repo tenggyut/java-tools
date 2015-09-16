@@ -1,7 +1,7 @@
-package com.tsinghuabigdata.common.utils;
+package com.tengyt.common.utils;
 
 import com.google.common.collect.Sets;
-import com.tsinghuabigdata.common.logging.LogFactory;
+import com.tengyt.common.logging.LogFactory;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;

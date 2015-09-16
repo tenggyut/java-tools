@@ -1,10 +1,10 @@
-package com.tsinghuabigdata.common.utils;
+package com.tengyt.common.utils;
 
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.tsinghuabigdata.common.logging.LogFactory;
+import com.tengyt.common.logging.LogFactory;
 import org.apache.logging.log4j.Logger;
 
 /**

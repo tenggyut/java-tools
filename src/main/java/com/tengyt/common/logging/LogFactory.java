@@ -1,4 +1,4 @@
-package com.tsinghuabigdata.common.logging;
+package com.tengyt.common.logging;
 
 
 import org.apache.logging.log4j.LogManager;

@@ -1,4 +1,4 @@
-package com.tsinghuabigdata.common.utils;
+package com.tengyt.common.utils;
 
 import com.google.common.base.*;
 import com.google.common.collect.Collections2;
