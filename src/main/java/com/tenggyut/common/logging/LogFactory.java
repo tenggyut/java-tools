@@ -10,8 +10,6 @@ import org.apache.logging.log4j.Logger;
  * Created by tenggyt on 2015/7/22.
  */
 public class LogFactory {
-    public static final String PERFORMANCE_LOGGER_NAME = "PerformanceLog";
-
     public static Logger getLogger(Class<?> clazz) {
         return LogManager.getLogger(clazz);
     }
@@ -20,7 +18,4 @@ public class LogFactory {
         return LogManager.getLogger(loggerName);
     }
 
-    public static void logPerformance(String method, long time) {
-        getLogger(PERFORMANCE_LOGGER_NAME).info("[{}] : {}", method, time);
-    }
 }

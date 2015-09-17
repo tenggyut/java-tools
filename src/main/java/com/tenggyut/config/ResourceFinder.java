@@ -17,30 +17,6 @@ import java.net.URL;
 public class ResourceFinder {
     private static final Logger LOG = LogFactory.getLogger(ResourceFinder.class);
 
-    public static BufferedReader readResourceBufferedReader(String fileName) {
-        InputStream in = null;
-        try {
-            URL url = Resources.getResource(fileName);
-            in = url.openStream();
-            return new BufferedReader(new InputStreamReader(in));
-        } catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-            return null;
-        }
-    }
-
-    public static Document readXml(String fileName) throws JDOMException, IOException {
-        SAXBuilder builder = new SAXBuilder();
-        InputStream in = findResources(fileName);
-        if (in != null) {
-            Document doc = builder.build(in);
-            in.close();
-            return doc;
-        } else {
-            throw new IOException("can't find " + fileName + " in the classpath");
-        }
-    }
-
     public static InputStream findResources(String fileName) throws IOException {
         URL url;
         try {
