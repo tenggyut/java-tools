@@ -12,7 +12,7 @@ import java.util.List;
  * <p/>
  * Created by tenggyt on 2015/7/11.
  */
-public class StringCollectionUtils {
+public class StringsUtils {
 
     /**
      * join a collection of string with the given separator. null or empty string will be skipped.
