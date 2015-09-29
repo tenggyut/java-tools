@@ -24,7 +24,7 @@ public class ListUtils {
         return listOne.size() == intersection.size() && listTwo.size() == intersection.size();
     }
 
-    public static <T> List<T> interaction(List<T> listOne, List<T> listTwo) {
+    public static <T> List<T> intersection(List<T> listOne, List<T> listTwo) {
         return Lists.newArrayList(Sets.intersection(Sets.newHashSet(listOne), Sets.newHashSet(listTwo)));
     }
 
