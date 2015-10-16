@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
+import java.util.Properties;
 
 public class ResourceFinder {
     private static final Logger LOG = LogFactory.getLogger(ResourceFinder.class);
@@ -71,6 +72,33 @@ public class ResourceFinder {
                 in.close();
             } catch (IOException e) {
                 LOG.error("failed to close InputStream because {}", e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * build a Properties object from a properties file.
+     *
+     * @param propertiesPath properties file path
+     * @return a Properties object which has loaded the given resource file.
+     */
+    public static Properties buildProperties(String propertiesPath) {
+        InputStream inputStream = null;
+        Properties property = new Properties();
+        try {
+            inputStream = findResources(propertiesPath);
+            property.load(inputStream);
+            return property;
+        } catch (Exception e) {
+            LOG.error("failed to load properties file {}, because {}", propertiesPath, e.getMessage());
+            return property;
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    LOG.error("failed to close InputStream, because {}", e.getMessage());
+                }
             }
         }
     }
