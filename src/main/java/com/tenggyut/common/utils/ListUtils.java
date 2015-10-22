@@ -9,6 +9,7 @@ import com.google.common.collect.Sets;
 import com.tenggyut.common.logging.LogFactory;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -24,19 +25,19 @@ public class ListUtils {
         return listOne.size() == intersection.size() && listTwo.size() == intersection.size();
     }
 
-    public static <T> List<T> intersection(List<T> listOne, List<T> listTwo) {
+    public static <T> List<T> intersection(Collection<T> listOne, Collection<T> listTwo) {
         return Lists.newArrayList(Sets.intersection(Sets.newHashSet(listOne), Sets.newHashSet(listTwo)));
     }
 
-    public static <T, S> List<S> flatmap(List<T> list, Function<T, List<S>> function) {
+    public static <T, S> List<S> flatmap(Collection<T> list, Function<T, List<S>> function) {
         return Lists.newArrayList(FluentIterable.from(list).transformAndConcat(function));
     }
 
-    public static <T, S> List<S> map(List<T> list, Function<T, S> function) {
-        return Lists.transform(list, function);
+    public static <T, S> List<S> map(Collection<T> list, Function<T, S> function) {
+        return Lists.newArrayList(Collections2.transform(list, function));
     }
 
-    public static <T> List<T> filter(List<T> list, Predicate<T> predicate) {
+    public static <T> List<T> filter(Collection<T> list, Predicate<T> predicate) {
         return Lists.newArrayList(Collections2.filter(list, predicate));
     }
 }
