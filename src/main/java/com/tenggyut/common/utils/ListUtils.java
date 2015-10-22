@@ -52,4 +52,16 @@ public class ListUtils {
     public static <T> List<T> filter(Iterable<T> list, Predicate<T> predicate) {
         return Lists.newArrayList(FluentIterable.from(list).filter(predicate));
     }
+
+    public static <T, S> List<S> flatmap(T[] list, Function<T, List<S>> function) {
+        return Lists.newArrayList(FluentIterable.of(list).transformAndConcat(function));
+    }
+
+    public static <T, S> List<S> map(T[] list, Function<T, S> function) {
+        return Lists.newArrayList(FluentIterable.of(list).transform(function));
+    }
+
+    public static <T> List<T> filter(T[] list, Predicate<T> predicate) {
+        return Lists.newArrayList(FluentIterable.of(list).filter(predicate));
+    }
 }
