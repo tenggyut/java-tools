@@ -40,4 +40,16 @@ public class ListUtils {
     public static <T> List<T> filter(Collection<T> list, Predicate<T> predicate) {
         return Lists.newArrayList(Collections2.filter(list, predicate));
     }
+
+    public static <T, S> List<S> flatmap(Iterable<T> list, Function<T, List<S>> function) {
+        return Lists.newArrayList(FluentIterable.from(list).transformAndConcat(function));
+    }
+
+    public static <T, S> List<S> map(Iterable<T> list, Function<T, S> function) {
+        return Lists.newArrayList(FluentIterable.from(list).transform(function));
+    }
+
+    public static <T> List<T> filter(Iterable<T> list, Predicate<T> predicate) {
+        return Lists.newArrayList(FluentIterable.from(list).filter(predicate));
+    }
 }
