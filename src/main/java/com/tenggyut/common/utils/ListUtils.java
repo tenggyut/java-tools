@@ -64,4 +64,21 @@ public class ListUtils {
     public static <T> List<T> filter(T[] list, Predicate<T> predicate) {
         return Lists.newArrayList(FluentIterable.of(list).filter(predicate));
     }
+
+    /**
+     * check if all the elements satisfy Predicate.apply. if not return false, otherwise true
+     *
+     * @param list      unchecked list
+     * @param predicate match logic.
+     * @return if all elements satisfy the given predicate, then return true, otherwise false
+     */
+    public static <T> boolean isAllMatch(Iterable<T> list, Predicate<T> predicate) {
+        for (T t : list) {
+            if (!predicate.apply(t)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
