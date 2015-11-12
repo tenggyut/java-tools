@@ -52,11 +52,20 @@ public class FileUtils {
         Files.write(content, out);
     }
 
-    public static void append(String content, String filePath) {
+    public static void append(String content, String filePath, boolean isReturn) {
+        File target = new File(filePath);
+        Preconditions.checkArgument(target.exists(), filePath + " does not exists..");
         try {
-            Files.append(content, new File(filePath), Charsets.UTF_8);
+            Files.append(content, target, Charsets.UTF_8);
+            if (isReturn) {
+                Files.append(DEFAULT_LINE_SEPARATOR, target, Charsets.UTF_8);
+            }
         } catch (IOException e) {
             LOG.error("failed to append {} to file {}, because {}", content, filePath, e.getMessage());
         }
+    }
+
+    public static void append(String content, String filePath) {
+        append(content, filePath, true);
     }
 }
