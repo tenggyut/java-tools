@@ -1,6 +1,7 @@
 package com.tenggyut.common.utils;
 
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.google.common.io.Files;
 import com.tenggyut.common.logging.LogFactory;
@@ -19,7 +20,7 @@ public class FileUtils {
     public static final String DEFAULT_LINE_SEPARATOR = "\n";
 
     /**
-     * write content to file with given path. if the given path exists, then
+     * write content to file with given path. if the given path exists, then delete it and create a new one
      *
      * @param content  file content
      * @param filePath file path
@@ -49,5 +50,13 @@ public class FileUtils {
     public static void write(byte[] content, File out) throws IOException {
         Preconditions.checkArgument(out.exists(), "file " + out.getName() + "does not exist");
         Files.write(content, out);
+    }
+
+    public static void append(String content, String filePath) {
+        try {
+            Files.append(content, new File(filePath), Charsets.UTF_8);
+        } catch (IOException e) {
+            LOG.error("failed to append {} to file {}, because {}", content, filePath, e.getMessage());
+        }
     }
 }
