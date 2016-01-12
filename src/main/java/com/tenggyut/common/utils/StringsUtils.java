@@ -31,6 +31,28 @@ public class StringsUtils {
     }
 
     /**
+     * join a collection of string with the given separator. null or empty string will be skipped.
+     *
+     * @param elements  string array
+     * @param separator separator used to join the string collection
+     * @return join result
+     */
+    public static String join(String[] elements, String separator) {
+        return Joiner.on(separator).skipNulls().join(elements);
+    }
+
+    /**
+     * join a collection of string with the given separator. null or empty string will be skipped.
+     *
+     * @param elements  string array
+     * @param separator separator used to join the string collection
+     * @return join result
+     */
+    public static String join(String separator, String... elements) {
+        return join(elements, separator);
+    }
+
+    /**
      * join a collection of object's toString result with the given separator. null object will be skipped.
      *
      * @param elements  elements collection
