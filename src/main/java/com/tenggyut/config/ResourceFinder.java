@@ -2,6 +2,7 @@ package com.tenggyut.config;
 
 import com.google.common.base.StandardSystemProperty;
 import com.google.common.collect.Lists;
+import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import com.google.common.io.Resources;
 import com.tenggyut.common.logging.LogFactory;
@@ -99,6 +100,38 @@ public class ResourceFinder {
                 } catch (IOException e) {
                     LOG.error("failed to close InputStream, because {}", e.getMessage());
                 }
+            }
+        }
+    }
+
+    /**
+     * read resource into a byte array
+     *
+     * @param resource resource path
+     * @return resource content as a byte array
+     * @throws IOException if something is wrong when reading the bytes..
+     */
+    public static byte[] readResourcesAsBytes(String resource) throws IOException {
+        InputStream in;
+        try {
+            in = ResourceFinder.findResources(resource);
+        } catch (IOException e) {
+            LOG.error("failed to find {} due to {}", resource, e);
+            return new byte[0];
+        }
+
+        byte[] data;
+
+        try {
+            data = ByteStreams.toByteArray(in);
+            return data;
+        } catch (IOException e) {
+            throw new IOException("failed to read " + resource + " into bytes due to " + e);
+        } finally {
+            if (in != null) try {
+                in.close();
+            } catch (IOException e) {
+                LOG.error("failed to close inputstream for {} due to {}", resource, e);
             }
         }
     }
