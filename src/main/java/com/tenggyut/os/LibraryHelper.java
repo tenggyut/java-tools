@@ -1,8 +1,12 @@
 package com.tenggyut.os;
 
+import com.google.common.base.Optional;
 import com.google.common.base.StandardSystemProperty;
 import com.google.common.io.Files;
+import com.tenggyut.common.logging.LogFactory;
 import com.tenggyut.config.ResourceFinder;
+import com.tenggyut.exception.RetryFailedException;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +18,7 @@ import java.io.IOException;
  * Created by tenggyt on 2016/1/12.
  */
 public class LibraryHelper {
+    private static final Logger LOG = LogFactory.getLogger(LibraryHelper.class);
 
     /**
      * load a dynamic link library shipped within a Jar file.
@@ -24,12 +29,17 @@ public class LibraryHelper {
      */
     public static void loadLibraryFromJar(String library) throws IOException {
         try {
-            File dll = File.createTempFile(library, getSuffixByOS());
-            Files.write(ResourceFinder.readResourcesAsBytes(library), dll);
+            String libFilename = library + getSuffixByOS();
+            Optional<File> dll = createTempLibrary(library);
+            if (!dll.isPresent()) {
+                throw new IOException("failed to create temp library file");
+            } else {
+                Files.write(ResourceFinder.readResourcesAsBytes(libFilename), dll.get());
 
-            dll.deleteOnExit();
+                dll.get().deleteOnExit();
 
-            System.load(dll.toString());
+                System.load(dll.get().getPath());
+            }
         } catch (IOException e) {
             throw new IOException("failed to copy " + library
                     + " out of jar and load it due to " + e);
@@ -38,12 +48,53 @@ public class LibraryHelper {
 
     private static String getSuffixByOS() {
         String os = StandardSystemProperty.OS_NAME.value();
-        if (os == null || os.contains("windows")) {
-            return "dll";
-        } else if (os.contains("linux")) {
-            return "so";
+        if (os == null || os.toLowerCase().contains("windows")) {
+            return ".dll";
+        } else if (os.toLowerCase().contains("linux")) {
+            return ".so";
         } else {
-            return null;
+            return ".tmp";
+        }
+    }
+
+    private static Optional<File> createTempLibrary(String library) {
+        String tmpDir = System.getProperty("java.io.tmpdir");
+        String libFilename = library + getSuffixByOS();
+        final File dll = new File(tmpDir + StandardSystemProperty.FILE_SEPARATOR.value() + libFilename);
+        if (dll.exists()) {
+            LOG.warn("{} already exists..delete it.");
+            try {
+                if (!new RetryWorker<Boolean>("delete " + dll.getPath()) {
+
+                    @Override
+                    protected Optional<Boolean> doWork() {
+                        return Optional.of(dll.delete());
+                    }
+
+                }.doWorkWithRetry()) return Optional.absent();
+            } catch (RetryFailedException e) {
+                LOG.error("failed to delete previews lib {} due to {}", dll.getPath(), e);
+                return Optional.absent();
+            }
+
+        }
+
+        try {
+            return new RetryWorker<Boolean>("create " + dll.getPath()) {
+
+                @Override
+                protected Optional<Boolean> doWork() {
+                    try {
+                        return Optional.of(dll.createNewFile());
+                    } catch (IOException e) {
+                        return Optional.of(false);
+                    }
+                }
+
+            }.doWorkWithRetry() ? Optional.of(dll) : Optional.<File>absent();
+        } catch (RetryFailedException e) {
+            LOG.error("failed to delete previews lib {} due to {}", dll.getPath(), e);
+            return Optional.absent();
         }
     }
 }
