@@ -21,12 +21,13 @@ public class ListUtils {
     private static final Logger LOG = LogFactory.getLogger(ListUtils.class);
 
     public static <T> boolean isTheSame(List<T> listOne, List<T> listTwo) {
+        if (listOne.size() != listTwo.size()) return false;
+
         Set<T> setOne = Sets.newHashSet(listOne);
         Set<T> setTwo = Sets.newHashSet(listTwo);
         Set<T> intersection = Sets.intersection(setOne, setTwo);
         return setOne.size() == intersection.size() && setTwo.size() == intersection.size();
     }
-
 
     public static <T> List<T> intersection(Collection<T> listOne, Collection<T> listTwo) {
         return Lists.newArrayList(Sets.intersection(Sets.newHashSet(listOne), Sets.newHashSet(listTwo)));
