@@ -20,7 +20,7 @@ public class LibraryHelper {
     private static final Logger LOG = LogFactory.getLogger(LibraryHelper.class);
 
     private static final String TEMP_DIR_PATH = System.getProperty("java.io.tmpdir")
-            + StandardSystemProperty.PATH_SEPARATOR.value() + "tmpdll";
+            + StandardSystemProperty.FILE_SEPARATOR.value() + "tmpdll";
 
     /**
      * load a dynamic link library shipped within a Jar file.

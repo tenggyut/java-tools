@@ -6,6 +6,8 @@ import com.tenggyut.exception.RetryFailedException;
 import org.apache.logging.log4j.Logger;
 
 /**
+ * RetryWorker: do something with retry
+ *
  * Created by tenggyt on 2016/1/12.
  */
 public abstract class RetryWorker<T> {
