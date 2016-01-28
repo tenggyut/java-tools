@@ -62,21 +62,8 @@ public class LibraryHelper {
         String libFilename = library + getSuffixByOS();
         final File dll = new File(tmpDir + StandardSystemProperty.FILE_SEPARATOR.value() + libFilename);
         if (dll.exists()) {
-            LOG.warn("{} already exists..delete it.");
-            try {
-                if (!new RetryWorker<Boolean>("delete " + dll.getPath()) {
-
-                    @Override
-                    protected Optional<Boolean> doWork() {
-                        return Optional.of(dll.delete());
-                    }
-
-                }.doWorkWithRetry()) return Optional.absent();
-            } catch (RetryFailedException e) {
-                LOG.error("failed to delete previews lib {} due to {}", dll.getPath(), e);
-                return Optional.absent();
-            }
-
+            LOG.info("dll {} exists already, use it", dll.getPath());
+            return Optional.of(dll);
         }
 
         try {
