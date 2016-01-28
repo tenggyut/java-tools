@@ -5,7 +5,6 @@ import com.google.common.base.StandardSystemProperty;
 import com.google.common.io.Files;
 import com.tenggyut.common.logging.LogFactory;
 import com.tenggyut.config.ResourceFinder;
-import com.tenggyut.exception.RetryFailedException;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
@@ -20,6 +19,9 @@ import java.io.IOException;
 public class LibraryHelper {
     private static final Logger LOG = LogFactory.getLogger(LibraryHelper.class);
 
+    private static final String TEMP_DIR_PATH = System.getProperty("java.io.tmpdir")
+            + StandardSystemProperty.PATH_SEPARATOR.value() + "tmpdll";
+
     /**
      * load a dynamic link library shipped within a Jar file.
      * Please note, "dll/library.so" is not supported yet.. Only "library.so"/"library.dll" are tested.
@@ -29,6 +31,7 @@ public class LibraryHelper {
      */
     public static void loadLibraryFromJar(String library) throws IOException {
         try {
+            cleanup(library);
             String libFilename = library + getSuffixByOS();
             Optional<File> dll = createTempLibrary(library);
             if (!dll.isPresent()) {
@@ -57,30 +60,36 @@ public class LibraryHelper {
         }
     }
 
-    private static Optional<File> createTempLibrary(String library) {
-        String tmpDir = System.getProperty("java.io.tmpdir");
-        String libFilename = library + getSuffixByOS();
-        final File dll = new File(tmpDir + StandardSystemProperty.FILE_SEPARATOR.value() + libFilename);
-        if (dll.exists()) {
-            LOG.info("dll {} exists already, use it", dll.getPath());
-            return Optional.of(dll);
-        }
-
-        try {
-            return new RetryWorker<Boolean>("create " + dll.getPath()) {
-
-                @Override
-                protected Optional<Boolean> doWork() {
-                    try {
-                        return Optional.of(dll.createNewFile());
-                    } catch (IOException e) {
-                        return Optional.of(false);
+    private static void cleanup(String library) {
+        File tmpDir = new File(TEMP_DIR_PATH);
+        if (tmpDir.isDirectory()) {
+            File[] dllCandidats = tmpDir.listFiles();
+            if (dllCandidats != null) {
+                for (File dllCandidate : dllCandidats) {
+                    if (dllCandidate.getName().contains(library)) {
+                        try {
+                            dllCandidate.delete();
+                        } catch (Exception e) {
+                            LOG.debug("try to delete {}..but failed due to {}..ignore it", dllCandidate.getPath(), e);
+                        }
                     }
                 }
+            }
+        }
+    }
 
-            }.doWorkWithRetry() ? Optional.of(dll) : Optional.<File>absent();
-        } catch (RetryFailedException e) {
-            LOG.error("failed to delete previews lib {} due to {}", dll.getPath(), e);
+    private static Optional<File> createTempLibrary(String library) {
+        File tmpDir = new File(TEMP_DIR_PATH);
+
+        if (!(!tmpDir.exists() || !tmpDir.isDirectory()) || tmpDir.mkdir()) {
+            try {
+                return Optional.of(File.createTempFile(library, "", tmpDir));
+            } catch (IOException e) {
+                LOG.error("failed to create tmp lib file {} due to {}", library, e);
+                return Optional.absent();
+            }
+        } else {
+            LOG.fatal("failed to create a tmpDir {} to store dll files", tmpDir.getPath());
             return Optional.absent();
         }
     }
