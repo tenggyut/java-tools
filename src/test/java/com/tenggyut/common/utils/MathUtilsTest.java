@@ -1,12 +1,11 @@
 package com.tenggyut.common.utils;
 
 import com.google.common.collect.ImmutableMap;
+import com.tenggyut.math.utils.MathUtils;
 import org.junit.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Map;
-
-import static org.testng.Assert.*;
 
 public class MathUtilsTest {
 
